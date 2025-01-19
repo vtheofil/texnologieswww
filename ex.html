@@ -161,6 +161,7 @@
     display: flex; /* Flexbox για κεντράρισμα περιεχομένου */
     justify-content: center;
     align-items: center;
+    padding-bottom: 40px;
 }
 
 .painting-container img {
@@ -172,8 +173,8 @@
 
 .painting-title{
   position: absolute; /* Απόλυτη θέση για να εμφανίζεται πάνω από την εικόνα */
-    top: -5px; /* Απόσταση από την κορυφή */
-    left: 32%; /* Κεντράρισμα οριζόντια */
+    bottom: -5px; /* Απόσταση από την κορυφή */
+    left: 40%; /* Κεντράρισμα οριζόντια */
     transform: translateX(-50%); /* Ακριβές κεντράρισμα */
     font-size: 16px;
     color: white;
@@ -182,7 +183,181 @@
     border-radius: 5px;
 }
     
-    
+table {
+    width: 100%;
+    border-collapse: collapse; /* Συγχώνευση των συνόρων για καλύτερη εμφάνιση */
+  }
+
+  th, td {
+    padding: 12px; /* Απόσταση γύρω από το περιεχόμενο */
+    text-align: left; /* Ευθυγράμμιση του κειμένου στα αριστερά */
+    border: 1px solid #ddd; /* Όρια γύρω από τα κελιά */
+  }
+
+  th {
+    color: white;
+    background-color: #1c005f; /* Ελαφρύ γκρι φόντο για τα κελιά τίτλων */
+    font-weight: bold; /* Έντονα γράμματα για τους τίτλους */
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9; /* Εναλλασσόμενα χρώματα γραμμών για καλύτερη ευκρίνεια */
+  }
+
+  tr:hover {
+    background-color: #f1f1f1; /* Αλλαγή χρώματος όταν περνάς με τον δείκτη του ποντικιού πάνω από μια γραμμή */
+  }
+
+  #books-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+}
+
+#books-table th, #books-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  
+}
+
+#books-table td:nth-child(1){
+  width: 20%
+}
+
+#books-table td:nth-child(2) {
+  width: 70%;  /* Ρυθμίστε το ποσοστό για να ανοίξει η στήλη */
+  word-wrap: break-word;
+}
+
+#books-table td:nth-child(3) {
+  width: 10%;
+}
+
+#books-table th {
+  background-color: #1c005f;
+  font-weight: bold;
+}
+
+/* Στυλ για τη Διαχείριση */
+#admin-menu {
+  margin-top: 30px;
+}
+
+#admin-menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#admin-menu ul li {
+  margin: 10px 0;
+}
+
+#admin-menu ul li a {
+  text-decoration: none;
+  color: #1c005f;
+  font-size: 1.2em;
+  padding: 10px;
+  display: block;
+}
+
+#admin-menu ul li a:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Στυλ για τις φόρμες διαχείρισης */
+/* Στυλ για τις φόρμες διαχείρισης */
+#login-form, #exhibitions-management, #links-management {
+  margin-left: 250px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#login-form h3 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.form-group input:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Στυλ για το logout button */
+#logout-button {
+  padding: 12px;
+  font-size: 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#logout-button:hover {
+  background-color: #c82333;
+}
+
+/* Απόκρυψη τμημάτων */
+.hidden {
+  display: none;
+}
+
+/* Στυλ για responsive εμφάνιση */
+@media (max-width: 600px) {
+  #login-form, #exhibitions-management, #links-management {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+      
   </style>
 </head>
 <body>
@@ -195,11 +370,11 @@
   </header>
   <nav>
     <ul>
-      <li><a href="#" onclick="showSection('biography')">Βιογραφία</a></li>
-      <li><a href="#" onclick="showSection('paintings')">Πίνακες</a></li>
-      <li><a href="#" onclick="showSection('exhibitions')">Εκθέσεις</a></li>
-      <li><a href="#" onclick="showSection('links')">Σύνδεσμοι</a></li>
-      <li><a href="#" onclick="showSection('admin')">Διαχείριση</a></li>
+      <li><a href="#" onclick="showSubsection('biography')">Βιογραφία</a></li>
+      <li><a href="#" onclick="showSubsection('paintings')">Πίνακες</a></li>
+      <li><a href="#" onclick="showSubsection('exhibitions')">Εκθέσεις</a></li>
+      <li><a href="#" onclick="showSubsection('links')">Σύνδεσμοι</a></li>
+      <li><a href="#" onclick="showSubsection('admin')">Διαχείριση</a></li>
     </ul>
   </nav>
   <aside id="sidebar">
@@ -212,11 +387,29 @@
       </ul>
     </div>
     <div id = "paintings-menu" class="hidden">
-      <h3>Υποκατηγορίες Πινάκων</h3>
+      <h3>Kατηγορίες Πινάκων</h3>
       <ul>
         <li><a href="#" onclick="showSubsection('landscapes')">Τοπία και Φύση</a></li>
         <li><a href="#" onclick="showSubsection('portais')">Προσωπογραφίες και Φιγούρες</a></li>
-        <li><a href="#" onclick="showSubsection('experimental-symbols')">Πειραματικά Έργα και Συμβολισμοί</a></li>
+        <li><a href="#" onclick="showSubsection('experimental')">Πειραματικά Έργα και Συμβολισμοί</a></li>
+      </ul>
+    </div>
+    <div id="exhibitions-menu" class="hidden">
+      <h3>Όλες Οι Eκθέσεις</h3>
+    </div>
+    <div id="links-menu" class="hidden">
+      <ul>
+        <li><a href="#" onclick="showSubsection('biblia')">Βιβλία</a></li>
+        <li><a href="#" onclick="showSubsection('sundesmoi')">Διαδυκτιακοί Σύνδεσμοι</a></li>
+      </ul>
+    </div>
+    <div id="admin-menu" class="hidden">
+      <h3>Διαχείριση</h3>
+      <ul>
+        <li><a href="#" onclick="showSubsection('login')">Σύνδεση</a></li>
+        <li><a href="#" onclick="showSubsection('logout')">Αποσύνδεση</a></li>
+        <li><a href="#" onclick="showSubsection('exhibitions-management')">Διαχείριση Εκθέσεων</a></li>
+        <li><a href="#" onclick="showSubsection('links-management')">Διαχείριση Συνδέσμων</a></li>
       </ul>
     </div>
     <!-- Άλλες ενότητες μενού παραμένουν κρυφές -->
@@ -269,7 +462,7 @@
     </section>
     <section id="paintings" class="hidden">
       <h2>Πίνακες</h2>
-      <p>Επιλέξτε από την κατηγορία πινάκων που επιθυμείτε.</p>
+      <p>Επιλέξτε την κατηγορία πινάκων που επιθυμείτε.</p>
     </section>
     <section id="landscapes" class="hidden">
       <h2 style="padding-bottom: 10px;">Τοπία και Φύση</h2>
@@ -305,34 +498,205 @@
         </div>
       </div>
     </section>
-    <section id="irises" class="hidden">
-      <h2>Ίριδες</h2>
-      <p>Περιγραφή του πίνακα "Ίριδες".</p>
+    <section id="experimental" class="hidden">
+      <h2 style="padding-bottom: 10px;">Πειραματικά Έργα και Συμβολισμοί</h2>
+      <div class="gallery-container">
+        <div class="painting-container">
+          <p class="painting-title">The Star of Bethlehem</p>
+          <img src="images/astro.jpg" alt="The Star of Bethlehem">
+        </div>
+        <div class="painting-container">
+          <p class="painting-title">Peach Tree in Blossom</p>
+          <img src="images/rodakina.jpg" alt="Peach Tree in Blossom">
+        </div>
+        <div class="painting-container">
+          <p class="painting-title">Cypresses</p>
+          <img src="images/kuparisi.jpg" alt="Cypresses">
+        </div>
+      </div>
     </section>
+    <section id="exhibitions" class="hidden">
+      <h2>Εκθέσεις</h2>      
+      <table>
+        <thead>
+          <tr>
+            <th>Έτος</th>
+            <th>Hμερομηνία Έναρξης</th>
+            <th>Ημερομηνία Λήξης</th>
+            <th>Χώρος διεξαγωγής</th>
+            <th>Πόλη</th>
+            <th>Χώρα</th>
+            <th>Όνομα Έκθεσης</th>
+            <th>Σύνδεσμοι</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+
+        </tbody>
+      </table>
+    </section>
+    <section id="links" class="hiiden">
+      <h2>Σύνδεσμοι</h2>
+      <p>Επιλέξτε συνδέσμους για βιβλία και internet-πόρους</p>
+    </section>
+    <section id="biblia" class="hidden">
+      <table id="books-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Link</th>            
+          </tr>
+        </thead>
+        <tbody id="book-table-body">
+        </tbody>
+      </table>        
+    </section>
+    <section id="sundesmoi" class="hidden">
+      <table >
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody id="sundesmoi-table-body">
+        </tbody>
+      </table>
+    </section>
+    <section id="admin" class="hidden">
+      <h2>Επίλεξτε μια επιλογή από το πλευρικό μενου</h2>
+    </section>
+
+    <section id="login" class="hidden">
+      <h3>Σύνδεση ως Διαχειριστής</h3>
+      <form id="login-form" action="/login" method="POST">
+        <div class="form-group">
+          <label for="username">Όνομα Χρήστη:</label>
+          <input type="text" id="username" name="username" placeholder="Εισάγετε το όνομα χρήστη" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Κωδικός:</label>
+          <input type="password" id="password" name="password" placeholder="Εισάγετε τον κωδικό" required>
+        </div>
+        <button type="submit">Σύνδεση</button>
+      </form>
+    </section>
+    
+    <div id="logout" class="hidden">
+      <button id="logout-button" onclick="logout()">Αποσύνδεση</button>
+    </div>
+
+    <section id="exhibitions-management" class="hidden">
+      <h3>Διαχείριση Εκθέσεων</h3>
+      <!-- Φόρμα για την προσθήκη/επεξεργασία έκθεσης -->
+      <form id="exhibition-form" onsubmit="addExhibition(event)">
+        <div class="form-group">
+          <label for="year">Έτος:</label>
+          <input type="number" id="year" name="year" required>
+        </div>
+        <div class="form-group">
+          <label for="start-date">Ημερομηνία Έναρξης:</label>
+          <input type="date" id="start-date" name="start-date" required>
+        </div>
+        <div class="form-group">
+          <label for="end-date">Ημερομηνία Λήξης:</label>
+          <input type="date" id="end-date" name="end-date" required>
+        </div>
+        <div class="form-group">
+          <label for="venue">Χώρος:</label>
+          <input type="text" id="venue" name="venue" required>
+        </div>
+        <div class="form-group">
+          <label for="city">Πόλη:</label>
+          <input type="text" id="city" name="city" required>
+        </div>
+        <div class="form-group">
+          <label for="country">Χώρα:</label>
+          <input type="text" id="country" name="country" required>
+        </div>
+        <div class="form-group">
+          <label for="exhibition-name">Όνομα Έκθεσης:</label>
+          <input type="text" id="exhibition-name" name="exhibition-name" required>
+        </div>
+        <div class="form-group">
+          <label for="links">Σύνδεσμος:</label>
+          <input type="url" id="links" name="links" required>
+        </div>
+        <button type="submit">Προσθήκη Έκθεσης</button>
+      </form>
+    
+      <div id="exhibitions-list">
+        <h4>Λίστα Εκθέσεων</h4>
+        <!-- Ο πίνακας ή λίστα εκθέσεων θα γεμίσει εδώ μέσω JavaScript -->
+        <table id="exhibition-table">
+          <thead>
+            <tr>
+              <th>Έτος</th>
+              <th>Ημερομηνία Έναρξης</th>
+              <th>Ημερομηνία Λήξης</th>
+              <th>Χώρος</th>
+              <th>Πόλη</th>
+              <th>Χώρα</th>
+              <th>Όνομα Έκθεσης</th>
+              <th>Σύνδεσμος</th>
+            </tr>
+          </thead>
+          <tbody id="exhibition-table-body">
+            <!-- Ο πίνακας θα γεμίσει δυναμικά από τον κώδικα -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+    <!-- Διαχείριση Συνδέσμων -->
+    <section id="links-management" class="hidden">
+      <h3>Διαχείριση Συνδέσμων</h3>
+      <!-- Φόρμα για την προσθήκη/επεξεργασία συνδέσμου -->
+      <form id="link-form" onsubmit="addLink(event)">
+        <div class="form-group">
+          <label for="link-title">Τίτλος Συνδέσμου:</label>
+          <input type="text" id="link-title" name="link-title" required>
+        </div>
+        <div class="form-group">
+          <label for="link-url">Διεύθυνση Συνδέσμου:</label>
+          <input type="url" id="link-url" name="link-url" required>
+        </div>
+        <div class="form-group">
+          <label for="link-description">Περιγραφή:</label>
+          <input type="text" id="link-description" name="link-description" required>
+        </div>
+        <button type="submit">Προσθήκη Συνδέσμου</button>
+      </form>
+    
+      <div id="links-list">
+        <h4>Λίστα Συνδέσμων</h4>
+        <!-- Ο πίνακας ή λίστα συνδέσμων θα γεμίσει εδώ μέσω JavaScript -->
+        <table id="links-table">
+          <thead>
+            <tr>
+              <th>Τίτλος</th>
+              <th>Διεύθυνση</th>
+              <th>Περιγραφή</th>
+            </tr>
+          </thead>
+          <tbody id="links-table-body">
+            <!-- Ο πίνακας θα γεμίσει δυναμικά από τον κώδικα -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+    
   </main>
+
+  
 
   <footer>
     <p>Copyright © 2025</p>
   </footer>
 
-  <script>
-    function showSection(sectionId) {
-      // Απόκρυψη όλων των τμημάτων aside και main
-      document.querySelectorAll('#sidebar > div').forEach(div => div.classList.add('hidden'));
-      document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
-
-      // Εμφάνιση της επιλεγμένης ενότητας aside και main
-      document.getElementById(`${sectionId}-menu`).classList.remove('hidden');
-      document.getElementById(sectionId).classList.remove('hidden');
-    }
-
-    function showSubsection(subsectionId) {
-      // Απόκρυψη όλων των τμημάτων main
-      document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
-
-      // Εμφάνιση της επιλεγμένης υποενότητας
-      document.getElementById(subsectionId).classList.remove('hidden');
-    }
-  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
