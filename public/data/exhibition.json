@@ -1,0 +1,149 @@
+{
+  "exhibition": [
+    {
+      
+      "year": "2023-24",
+      "startDate": "November 22, 2023",
+      "endDate": "November 24, 2024",
+      "venue": "Palace Museum",
+      "city": "Hong Kong",
+      "country": "China",
+      "exhibitionName": "Botticelli to Van Gogh: Masterpieces from the National Gallery, London",
+      "links":"https://www.nationalgallery.org.uk/about-us/press-and-media/press-releases/botticelli-to-van-gogh-masterpieces-from-the-national-gallery-london-opens-at-hong-kong-palace-museum-on-22-november-2023"
+    },
+    {
+      
+      "year": "2024",
+      "startDate": "April 26, 2024",
+      "endDate": "December 8, 2024",
+      "venue": "Museum of John Paul II and Primate Wyszynski",
+      "city": "Warsaw",
+      "country": "Poland",
+      "exhibitionName": "Van Gogh. The Stories of One Painting",
+      "links":"https://www.rfi.fr/en/international-news/20240426-poland-trumpets-its-van-gogh-once-peddled-for-a-beer"
+
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "March 16, 2024",
+      "endDate": "January 26, 2025",
+      "venue": "National Museum Cardiff",
+      "city": "Cardiff",
+      "country": "United Kingdom",
+      "exhibitionName": "Art of the Selfie",
+      "links":"https://artuk.org/discover/stories/self-reflection-at-national-museum-cardiffs-art-of-the-selfie-exhibition"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "March 29, 2024",
+      "endDate": "June 1, 2025",
+      "venue": "Groninger Museum",
+      "city": "Groningen (1)",
+      "country": "Netherlands",
+      "exhibitionName": "150 Years of the Groninger Museum: Behind the Scenes",
+      "links":"https://www.groningermuseum.nl/en/art/exhibitions/groninger-museum-150-jaar-behind-the-scenes"
+      
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "September 14, 2024",
+      "endDate": "January 19, 2025",
+      "venue": "National Gallery",
+      "city": "London",
+      "country": "United Kingdom",
+      "exhibitionName": "Van Gogh: Poets and Lovers",
+      "links": "https://www.nationalgallery.org.uk/exhibitions/van-gogh-poets-and-lovers"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "September 20, 2024",
+      "endDate": "January 12, 2025",
+      "venue": "Pérez Simón Collection",
+      "city": "Mexico City",
+      "country": "Mexico",
+      "exhibitionName": "Seventy Great Masters from the Pérez Simón Collection",
+      "links": "https://www.centrocentro.org/en/exhibition/seventy-great-masters-perez-simon-collection"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "September 20, 2024",
+      "endDate": "January 26, 2025",
+      "venue": "Kunsthaus Zurich",
+      "city": "Zurich",
+      "country": "Switzerland",
+      "exhibitionName": "Matthew Wong - Vincent van Gogh",
+      "links": "https://www.kunsthaus.ch/en/besuch-planen/ausstellungen/wong-van-gogh/"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "October 1, 2024",
+      "endDate": "January 19, 2025",
+      "venue": "Getty Center",
+      "city": "Los Angeles",
+      "country": "United States",
+      "exhibitionName": "Ultra-Violet: New Light on Van Gogh's irises",
+      "links": "https://www.getty.edu/visit/cal/events/ev_4085.html"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "October 4, 2024",
+      "endDate": "January 26, 2025",
+      "venue": "Ateneum Art Museum",
+      "city": "Helsinki",
+      "country": "Finland",
+      "exhibitionName": "Gothic Modern: From Darkness to Light",
+      "links": "https://ateneum.fi/en/exhibitions/gothic-modern/"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "October 5, 2024",
+      "endDate": "May 11, 2025",
+      "venue": "Kröller-Müller Museum",
+      "city": "Otterlo",
+      "country": "Netherlands",
+      "exhibitionName": "Searching for Meaning",
+      "links": "https://krollermuller.nl/en/searching-for-meaning"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "October 11, 2024",
+      "endDate": "January 26, 2025",
+      "venue": "Van Gogh Museum",
+      "city": "Amsterdam",
+      "country": "Netherlands",
+      "exhibitionName": "Vive l’impressionnisme! Masterpieces from Dutch Collections",
+      "links": "https://www.vangoghmuseum.nl/en/visit/whats-on/exhibitions/vive-limpressionnisme"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "October 16, 2024",
+      "endDate": "February 9, 2025",
+      "venue": "Louvre Abu Dhabi",
+      "city": "Abu Dhabi",
+      "country": "United Arab Emirates",
+      "exhibitionName": "Post-Impressionism: Beyond Appearances",
+      "links": "https://www.louvreabudhabi.ae/en/exhibitions/post-impressionism"
+    },
+    {
+      
+      "year": "2024-25",
+      "startDate": "November 17, 2024",
+      "endDate": "March 29, 2025",
+      "venue": "Museum of Modern Art",
+      "city": "New York",
+      "country": "United States",
+      "exhibitionName": "Lillie P. Bliss and the Birth of the Modern",
+      "links": "https://www.moma.org/calendar/exhibitions/5737"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "links": [
+    {
+      "title": "Μουσείο Βαν Γκογκ, Άμστερνταμ",
+      "description": "Επίσημος ιστότοπος του Μουσείου Βαν Γκογκ",
+      "link": "https://vangoghmuseum.nl"
+    },
+    {
+      "title": "Κολέγιο Βαν Γκογκ στην Ολλανδία",
+      "description": "Επίσημος ιστότοπος του Κολεγίου Βαν Γκογκ",
+      "link": "https://krollermuller.nl"
+    },
+    {
+      "title": "Βαν Γκογκ στο Wikipedia",
+      "description": "Λεπτομερής βιογραφία και ανάλυση του έργου του Βαν Γκογκ",
+      "link": "https://en.wikipedia.org/wiki/Vincent_van_Gogh"
+    },
+    {
+      "title": "The Van Gogh Museum: Εκθέσεις & Μελέτες",
+      "description": "Εκθέσεις και μελέτες του έργου του Βαν Γκογκ από το μουσείο",
+      "link": "https://vangoghmuseum.nl/en"
+    }
+  ]
+}
