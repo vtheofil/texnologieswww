@@ -1,292 +1,335 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   checkLoginStatus();
   fetchExhibitionsData();
   fetchLinksData();
-  fetchBooksData(); 
+  fetchBooksData();
 });
 
+// ── Sidebar mapping: top-level section → sidebar menu id ──
+const SIDEBAR_MAP = {
+  biography: 'biography-menu',
+  'early-life': 'biography-menu',
+  career: 'biography-menu',
+  legacy: 'biography-menu',
+  paintings: 'paintings-menu',
+  landscapes: 'paintings-menu',
+  portais: 'paintings-menu',
+  experimental: 'paintings-menu',
+  exhibitions: 'exhibitions-menu',
+  links: 'links-menu',
+  biblia: 'links-menu',
+  sundesmoi: 'links-menu',
+  admin: 'admin-menu',
+  login: 'admin-menu',
+  logout: 'admin-menu',
+  'exhibitions-management': 'admin-menu',
+  'links-management': 'admin-menu',
+};
 
+function showSubsection(sectionId) {
+  // Κρύβουμε όλα τα sections
+  document.querySelectorAll('main section, main > div').forEach(el => el.classList.add('hidden'));
 
-document.getElementById('login-form').addEventListener('submit', function (event) {
-  event.preventDefault(); 
+  const target = document.getElementById(sectionId);
+  if (target) target.classList.remove('hidden');
 
-  const username = document.getElementById('username').value;  
-  const password = document.getElementById('password').value;  
+  // Ενημερώνουμε το sidebar
+  document.querySelectorAll('aside > div').forEach(el => el.classList.add('hidden'));
+  const menuId = SIDEBAR_MAP[sectionId];
+  if (menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu) menu.classList.remove('hidden');
+  }
 
-  // Αποστολή των δεδομένων στον server μέσω fetch
-  fetch('http://127.0.0.1:3000/auth/login', {  // Χρησιμοποιούμε τη σωστή διεύθυνση του server
-    method: 'POST',  // Μέθοδος POST για αποστολή των δεδομένων
-    headers: {
-      'Content-Type': 'application/json',  // Ορίζουμε το περιεχόμενο ως JSON
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password
-    })  // Μετατροπή των δεδομένων σε JSON
-  })
-  .then(response => {
-    if (response.ok) {
-      return response.json();  // Αν η απάντηση είναι επιτυχής, επιστρέφουμε το JSON
-    }
-    // Διαχείριση σφαλμάτων σε περίπτωση αποτυχίας
-    return response.text().then(errorText => { throw new Error(errorText) });
-  })
-  .then(data => {
-    if (data.token) {
-      localStorage.setItem('authToken', data.token);  // Αποθήκευση του token στο localStorage
-      alert('Σύνδεση επιτυχής!'); 
-      checkLoginStatus(); // Ενημέρωση κατάστασης σύνδεσης
-    }
-  })
-  .catch(error => {
-    alert('Λάθος όνομα χρήστη ή κωδικός');  // Ειδοποίηση σφάλματος για λανθασμένα στοιχεία
-    console.error(error);  // Εμφάνιση του σφάλματος στην κονσόλα
-  });
-});
+  // Active nav link
+  document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+  const active = document.querySelector(`nav ul li a[onclick="showSubsection('${sectionId}')"]`);
+  if (active) active.classList.add('active');
 
-// Αποσύνδεση του χρήστη
-function logout() {
-  // Αφαίρεση του token από το localStorage
-  localStorage.removeItem('authToken');  
-
-  // Εμφάνιση μηνύματος αποσύνδεσης
-  alert('Αποσύνδεση επιτυχής!');
-
-  // Απόκρυψη του μενού διαχείρισης και εμφάνιση της φόρμας σύνδεσης
-  document.getElementById('admin-menu').classList.add('hidden');
-  document.getElementById('login').classList.remove('hidden');
-  document.getElementById('logout-button').classList.add('hidden'); // Κρύβουμε το κουμπί αποσύνδεσης
-  
-  // Ενημέρωση κατάστασης σύνδεσης
-  checkLoginStatus();
+  // Φόρτωση admin λιστών όταν ανοίγουν τα management panels
+  if (sectionId === 'exhibitions-management') loadAdminExhibitions();
+  if (sectionId === 'links-management') loadAdminLinks();
 }
 
-// Έλεγχος κατάστασης σύνδεσης κατά την φόρτωση της σελίδας
+// ── Login ──
+document.getElementById('login-form').addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  fetch('http://127.0.0.1:3000/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
+  })
+    .then(res => {
+      if (res.ok) return res.json();
+      return res.json().then(err => { throw new Error(err.message); });
+    })
+    .then(data => {
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+        alert('Σύνδεση επιτυχής!');
+        checkLoginStatus();
+        showSubsection('admin');
+      }
+    })
+    .catch(() => alert('Λάθος όνομα χρήστη ή κωδικός'));
+});
+
+// ── Logout ──
+function logout() {
+  localStorage.removeItem('authToken');
+  alert('Αποσύνδεση επιτυχής!');
+  checkLoginStatus();
+  showSubsection('login');
+}
+
+document.getElementById('logout-button').addEventListener('click', logout);
+
+// ── Έλεγχος κατάστασης σύνδεσης ──
 function checkLoginStatus() {
   const token = localStorage.getItem('authToken');
-  const adminMenu = document.getElementById('admin-menu');
-  const loginForm = document.getElementById('login');
   const logoutButton = document.getElementById('logout-button');
   const exhibitionsLink = document.getElementById('exhibitions-management-link');
-  const linksManagementLink = document.getElementById('links-management-link');
+  const linksLink = document.getElementById('links-management-link');
+  const logoutSidebarLink = document.getElementById('logout-sidebar-link');
 
-  console.log('Token κατά τον έλεγχο:', token); // Debugging
-
-  if (token && token !== "null") {
-    // Εμφάνιση για συνδεδεμένο χρήστη
-    adminMenu?.classList.remove('hidden');
-    loginForm?.classList.remove('hidden');
-    logoutButton?.classList.remove('hidden');
-    exhibitionsLink?.classList.remove('hidden');
-    linksManagementLink?.classList.remove('hidden');
-    console.log("Ο χρήστης είναι συνδεδεμένος.");
+  if (token) {
+    logoutButton.classList.remove('hidden');
+    exhibitionsLink.classList.remove('hidden');
+    linksLink.classList.remove('hidden');
+    logoutSidebarLink.classList.remove('hidden');
   } else {
-    // Απόκρυψη για μη συνδεδεμένο χρήστη
-    adminMenu?.classList.add('hidden');
-    loginForm?.classList.add('hidden');
-    logoutButton?.classList.add('hidden');
-    exhibitionsLink?.classList.add('hidden');
-    linksManagementLink?.classList.add('hidden');
-    console.log("Ο χρήστης δεν είναι συνδεδεμένος.");
+    logoutButton.classList.add('hidden');
+    exhibitionsLink.classList.add('hidden');
+    linksLink.classList.add('hidden');
+    logoutSidebarLink.classList.add('hidden');
   }
 }
 
-
-// Κλήση της checkLoginStatus όταν φορτώνει η σελίδα
-window.addEventListener('load', checkLoginStatus);
-
-// Ενεργοποίηση της αποσύνδεσης όταν γίνεται κλικ στο κουμπί αποσύνδεσης
-document.getElementById('logout-button').addEventListener('click', function() {
-  logout();  // Κλήση της συνάρτησης αποσύνδεσης
-});
-
-// Φόρτωση βιβλίων
-function fetchBooksData() {
-  fetch('data/books.json')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      loadBooks(data.Books); // Καλούμε την loadBooks με τα δεδομένα των βιβλίων
-    })
-    .catch(error => {
-      console.error('Error fetching books data:', error);
-    });
-}
-
-// Εμφάνιση των βιβλίων στον πίνακα
-function loadBooks(books) {
-  const booksTableBody = document.getElementById('book-table-body');
-  booksTableBody.innerHTML = "";  // Καθαρίζουμε το tbody πριν την προσθήκη νέων γραμμών
-
-  books.forEach(book => {
-    const row = document.createElement("tr");
-
-    // Δημιουργούμε τον σύνδεσμο
-    const bookHtml = `<a href="${book.link}" target="_blank">${book.title}</a>`;
-
-    row.innerHTML = `
-      <td>${book.title}</td>
-      <td>${book.description}</td>
-      <td>${bookHtml}</td>
-    `;
-
-    booksTableBody.appendChild(row); // Προσθήκη της γραμμής στον πίνακα
-  });
-}
-
-// Φόρτωση δεδομένων για συνδέσμους
-function fetchLinksData() {
-  fetch('data/internet_links.json')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      loadLinks(data.links);
-    })
-    .catch(error => {
-      console.error('Error fetching internet-links.json:', error);
-    });
-}
-
-// Εμφάνιση των Internet Links στον πίνακα
-function loadLinks(links) {
-  const linksTableBody = document.getElementById('sundesmoi-table-body');
-  linksTableBody.innerHTML = ""; // Καθαρίζουμε το tbody πριν την προσθήκη νέων γραμμών
-
-  links.forEach(link => {
-    const row = document.createElement("tr");
-
-    // Δημιουργούμε τον σύνδεσμο
-    const linkHtml = `<a href="${link.link}" target="_blank">${link.title}</a>`;
-
-    row.innerHTML = `
-      <td>${link.title}</td>
-      <td>${link.description}</td>
-      <td>${linkHtml}</td>
-    `;
-
-    linksTableBody.appendChild(row); // Προσθήκη της γραμμής στον πίνακα
-  });
-}
-
-// Φόρτωση εκθέσεων
+// ── Fetch εκθέσεων ──
 function fetchExhibitionsData() {
   fetch('data/exhibition.json')
-    .then(response => response.json())
+    .then(res => res.json())
+    .then(data => loadExhibitions(data.exhibition))
+    .catch(err => console.error('Error fetching exhibitions:', err));
+}
+
+function loadExhibitions(exhibitions) {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+  exhibitions.forEach(ex => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${ex.year}</td>
+      <td>${ex.startDate}</td>
+      <td>${ex.endDate}</td>
+      <td>${ex.venue}</td>
+      <td>${ex.city}</td>
+      <td>${ex.country}</td>
+      <td>${ex.exhibitionName}</td>
+      <td><a href="${ex.links}" target="_blank">Σύνδεσμος</a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── Fetch βιβλίων ──
+function fetchBooksData() {
+  fetch('data/Books.json')
+    .then(res => res.json())
+    .then(data => loadBooks(data.Books))
+    .catch(err => console.error('Error fetching books:', err));
+}
+
+function loadBooks(books) {
+  const tbody = document.getElementById('book-table-body');
+  tbody.innerHTML = '';
+  books.forEach(book => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${book.title}</td>
+      <td>${book.description}</td>
+      <td><a href="${book.link}" target="_blank">${book.title}</a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── Fetch internet links ──
+function fetchLinksData() {
+  fetch('data/internet_links.json')
+    .then(res => res.json())
+    .then(data => loadLinks(data.links))
+    .catch(err => console.error('Error fetching links:', err));
+}
+
+function loadLinks(links) {
+  const tbody = document.getElementById('sundesmoi-table-body');
+  tbody.innerHTML = '';
+  links.forEach(link => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${link.title}</td>
+      <td>${link.description}</td>
+      <td><a href="${link.link}" target="_blank">${link.title}</a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── Προσθήκη έκθεσης (admin) ──
+function addExhibition(event) {
+  event.preventDefault();
+  const token = localStorage.getItem('authToken');
+  if (!token) { alert('Πρέπει να συνδεθείτε πρώτα.'); return; }
+
+  const newEx = {
+    year: document.getElementById('year').value,
+    startDate: document.getElementById('start-date').value,
+    endDate: document.getElementById('end-date').value,
+    venue: document.getElementById('venue').value,
+    city: document.getElementById('city').value,
+    country: document.getElementById('country').value,
+    exhibitionName: document.getElementById('exhibition-name').value,
+    links: document.getElementById('links').value,
+  };
+
+  fetch('http://127.0.0.1:3000/exhibition', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    },
+    body: JSON.stringify(newEx),
+  })
+    .then(res => res.json())
     .then(data => {
-      loadExhibitions(data.exhibition);
+      alert(data.message);
+      document.getElementById('exhibition-form').reset();
+      fetchExhibitionsData();
+      loadAdminExhibitions();
     })
-    .catch(error => {
-      console.error('Error fetching exhibitions data:', error);
+    .catch(() => alert('Σφάλμα κατά την προσθήκη.'));
+}
+
+// ── Φόρτωση εκθέσεων στο admin panel (με delete) ──
+function loadAdminExhibitions() {
+  fetch('data/exhibition.json')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('exhibitions-list');
+      const exhibitions = data.exhibition;
+
+      let html = '<h4>Λίστα Εκθέσεων</h4>';
+      if (exhibitions.length === 0) {
+        html += '<p>Δεν υπάρχουν εκθέσεις.</p>';
+      } else {
+        html += '<table><thead><tr><th>Έτος</th><th>Όνομα Έκθεσης</th><th>Πόλη</th><th></th></tr></thead><tbody>';
+        exhibitions.forEach((ex, idx) => {
+          html += `<tr>
+            <td>${ex.year}</td>
+            <td>${ex.exhibitionName}</td>
+            <td>${ex.city}, ${ex.country}</td>
+            <td><button class="delete-btn" onclick="deleteExhibition(${idx})">Διαγραφή</button></td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+      }
+      container.innerHTML = html;
     });
 }
 
-// Εμφάνιση των εκθέσεων στον πίνακα
-function loadExhibitions(exhibitions) {
-  const tableBody = document.getElementById("table-body");
-  tableBody.innerHTML = "";  // Καθαρίζουμε το tbody πριν την προσθήκη νέων γραμμών
-
-  exhibitions.forEach(exhibition => {
-    const row = document.createElement("tr");
-    
-    // Δημιουργούμε τον σύνδεσμο
-    let linksHtml = `<a href="${exhibition.links}" target="_blank">Σύνδεσμος</a>`;
-
-    row.innerHTML = `
-      <td>${exhibition.year}</td>
-      <td>${exhibition.startDate}</td>
-      <td>${exhibition.endDate}</td>
-      <td>${exhibition.venue}</td>
-      <td>${exhibition.city}</td>
-      <td>${exhibition.country}</td>
-      <td>${exhibition.exhibitionName}</td>      
-      <td>${linksHtml}</td>
-    `;
-
-    tableBody.appendChild(row); // Προσθήκη της γραμμής στον πίνακα
-  });
-}
-
-
-
-
-
-
-
-
-// Εμφάνιση της επιλεγμένης κατηγορίας
-function showSection(sectionId) {
+function deleteExhibition(idx) {
   const token = localStorage.getItem('authToken');
+  if (!token) { alert('Πρέπει να συνδεθείτε πρώτα.'); return; }
+  if (!confirm('Να διαγραφεί η έκθεση;')) return;
 
-  
-
-  const sections = document.querySelectorAll('main section');
-  sections.forEach(section => section.classList.add('hidden'));  // Απόκρυψη όλων των sections
-
-  const selectedSection = document.getElementById(sectionId);
-
-  // Αν δεν υπάρχει token και το section είναι το "exhibitions-management", μην κάνεις τίποτα
-  if (!token && sectionId === 'exhibitions-management') {
-    alert('Πρέπει να συνδεθείτε ως διαχειριστής για να αποκτήσετε πρόσβαση.');
-    return;
-  }
-
-
-  if (selectedSection) {
-    selectedSection.classList.remove('hidden');  // Εμφάνιση της επιλεγμένης ενότητας
-  }
-
-  // Κρύβουμε όλες τις υποκατηγορίες στο sidebar
-  const subsections = document.querySelectorAll('aside div');
-  subsections.forEach(subsection => subsection.classList.add('hidden'));
-
-  // Εμφάνιση του menu της επιλεγμένης κατηγορίας
-  const selectedMenu = document.getElementById(sectionId + '-menu');
-  if (selectedMenu) {
-    selectedMenu.classList.remove('hidden');
-  }
-
-  // Ενεργοποιούμε το σωστό σύνδεσμο στο μενού πλοήγησης
-  const navLinks = document.querySelectorAll('nav ul li a');
-  navLinks.forEach(link => link.classList.remove('active'));
-  const activeLink = document.querySelector(`nav ul li a[onclick="showSection('${sectionId}')"]`);
-  if (activeLink) {
-    activeLink.classList.add('active');
-  }
+  fetch(`http://127.0.0.1:3000/exhibition/${idx}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': token },
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      fetchExhibitionsData();
+      loadAdminExhibitions();
+    })
+    .catch(() => alert('Σφάλμα κατά τη διαγραφή.'));
 }
 
-// Εμφάνιση της επιλεγμένης υποκατηγορίας
-function showSubsection(subsectionId) {
-  const sections = document.querySelectorAll('main section');
-  sections.forEach(section => section.classList.add('hidden'));  // Απόκρυψη όλων των sections
+// ── Προσθήκη συνδέσμου (admin) ──
+function addLink(event) {
+  event.preventDefault();
+  const token = localStorage.getItem('authToken');
+  if (!token) { alert('Πρέπει να συνδεθείτε πρώτα.'); return; }
 
-  const selectedSubsection = document.getElementById(subsectionId);
-  if (selectedSubsection) {
-    selectedSubsection.classList.remove('hidden');  // Εμφάνιση της επιλεγμένης υποκατηγορίας
-  }
+  const newLink = {
+    title: document.getElementById('link-title').value,
+    link: document.getElementById('link-url').value,
+    description: document.getElementById('link-description').value,
+  };
 
-  // Ενεργοποίηση του αντίστοιχου συνδέσμου στην πλοήγηση
-  const navLinks = document.querySelectorAll('nav ul li a');
-  navLinks.forEach(link => link.classList.remove('active'));
-  const activeLink = document.querySelector(`nav ul li a[onclick="showSubsection('${subsectionId}')"]`);
-  if (activeLink) {
-    activeLink.classList.add('active');
-  }
+  fetch('http://127.0.0.1:3000/links', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    },
+    body: JSON.stringify(newLink),
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      document.getElementById('link-form').reset();
+      fetchLinksData();
+      loadAdminLinks();
+    })
+    .catch(() => alert('Σφάλμα κατά την προσθήκη.'));
 }
 
-// Καλούμε την showSection για να εμφανίζονται οι υποκατηγορίες όταν επιλέγεται μια κύρια κατηγορία
-document.querySelectorAll('nav ul li a').forEach(link => {
-  link.addEventListener('click', function(event) {
-    const sectionId = this.getAttribute('onclick').match(/'([^']+)'/)[1];
-    showSection(sectionId);
-  });
-});
+// ── Φόρτωση συνδέσμων στο admin panel (με delete) ──
+function loadAdminLinks() {
+  fetch('data/internet_links.json')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('links-list');
+      const links = data.links;
 
+      let html = '<h4>Λίστα Συνδέσμων</h4>';
+      if (links.length === 0) {
+        html += '<p>Δεν υπάρχουν σύνδεσμοι.</p>';
+      } else {
+        html += '<table><thead><tr><th>Τίτλος</th><th>Περιγραφή</th><th></th></tr></thead><tbody>';
+        links.forEach((lnk, idx) => {
+          html += `<tr>
+            <td><a href="${lnk.link}" target="_blank">${lnk.title}</a></td>
+            <td>${lnk.description}</td>
+            <td><button class="delete-btn" onclick="deleteLink(${idx})">Διαγραφή</button></td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+      }
+      container.innerHTML = html;
+    });
+}
 
+function deleteLink(idx) {
+  const token = localStorage.getItem('authToken');
+  if (!token) { alert('Πρέπει να συνδεθείτε πρώτα.'); return; }
+  if (!confirm('Να διαγραφεί ο σύνδεσμος;')) return;
+
+  fetch(`http://127.0.0.1:3000/links/${idx}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': token },
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      fetchLinksData();
+      loadAdminLinks();
+    })
+    .catch(() => alert('Σφάλμα κατά τη διαγραφή.'));
+}
